@@ -66,7 +66,7 @@ jobs:
       run: |
         .\Release\${{ matrix.project_name }}.exe
         XCOPY .\Release\${{ matrix.project_name }}.exe ${{ github.workspace }}\release\
-        rename ${{ github.workspace }}\release\${{ matrix.project_name }}.exe ${{ github.workspace }}\release\main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}.exe
+        mv ${{ github.workspace }}\release\${{ matrix.project_name }}.exe ${{ github.workspace }}\release\main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}.exe
     - name: Run the program
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       if: matrix.os == 'ubuntu-latest'
