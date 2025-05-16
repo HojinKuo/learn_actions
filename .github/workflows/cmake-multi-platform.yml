@@ -94,7 +94,7 @@ jobs:
       with:
         name: main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
         path: ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
-
+        compression-level: 0 # no compression
   
   Release:
     needs: build
@@ -107,7 +107,7 @@ jobs:
         path: ${{ github.workspace }}/release
 
     - name: Display structure of downloaded files
-      run: ls -R ${{ github.workspace }}/release
+      run: ls -alR ${{ github.workspace }}/release
     
     - name: Release
       uses: softprops/action-gh-release@v2  
