@@ -75,15 +75,17 @@ jobs:
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       if: matrix.os == 'windows-latest'
       run: |
+        ls
         .\Release\${{ matrix.project_name }}.exe
         XCOPY .\Release\${{ matrix.project_name }}.exe ${{ github.workspace }}\release\
-        mv ${{ github.workspace }}\release\${{ matrix.project_name }}.exe ${{ github.workspace }}\release\main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}.exe
+        mv ${{ github.workspace }}\release\${{ matrix.project_name }}.exe ${{ github.workspace }}\release\main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
     - name: Run the program
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       if: matrix.os == 'ubuntu-latest'
       run: |
+        ls 
         ./${{ matrix.project_name }}
-        ./${{ matrix.project_name }} ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
+        cp ./${{ matrix.project_name }} ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
 
     - name: Release
       uses: softprops/action-gh-release@v2  
@@ -92,7 +94,6 @@ jobs:
         body: "The first release of the project."
         tag_name: ${{ github.ref }}
         files: |
-          ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}.exe
           ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
 
 
