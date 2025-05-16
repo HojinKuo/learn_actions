@@ -114,8 +114,7 @@ jobs:
       uses: softprops/action-gh-release@v2  
       if: github.ref_type == 'tag'
       with:
-        body: "The first release of the project."
-        tag_name: ${{ github.ref }}
+        body: "The release of the project."
         files: |
           ${{ github.workspace }}/release/*
 
