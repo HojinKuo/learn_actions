@@ -105,7 +105,8 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         path: ${{ github.workspace }}/release
-
+        merge-multiple: true
+        
     - name: Display structure of downloaded files
       run: ls -alR ${{ github.workspace }}/release
     
