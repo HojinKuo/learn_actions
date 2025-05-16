@@ -2,6 +2,7 @@ name: CMake on multiple platforms
 
 permissions:
   contents: write
+
 on:
   workflow_dispatch:
     inputs:
@@ -89,6 +90,26 @@ jobs:
         cp ./${{ matrix.project_name }} ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
         ls ${{ github.workspace }}/release/
 
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
+        path: ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
+
+  
+  Release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'tag'
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        path: ${{ github.workspace }}/release
+
+    - name: Display structure of downloaded files
+      run: ls -R ${{ github.workspace }}/release
+    
     - name: Release
       uses: softprops/action-gh-release@v2  
       if: github.ref_type == 'tag'
@@ -96,7 +117,7 @@ jobs:
         body: "The first release of the project."
         tag_name: ${{ github.ref }}
         files: |
-          ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
+          ${{ github.workspace }}/release/*
 
 
 
