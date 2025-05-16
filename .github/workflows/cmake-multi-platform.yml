@@ -60,7 +60,7 @@ jobs:
     - name: Run the program
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       if: matrix.os == 'windows-latest'
-      run: ${{ matrix.project_name }}.exe
+      run: ls
 
     - name: Run the program
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
