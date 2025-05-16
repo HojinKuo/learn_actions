@@ -1,5 +1,7 @@
 name: CMake on multiple platforms
 
+permissions:
+  contents: write
 on:
   workflow_dispatch
 
@@ -40,6 +42,7 @@ jobs:
       id: strings
       shell: bash
       run: |
+        mkdir -pv ${{ github.workspace }}/release
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
     - name: Configure CMake
@@ -60,12 +63,24 @@ jobs:
     - name: Run the program
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       if: matrix.os == 'windows-latest'
-      run: .\Release\${{ matrix.project_name }}.exe
+      run: |
+        .\Release\${{ matrix.project_name }}.exe
+        cp .\Release\${{ matrix.project_name }}.exe ${{ github.workspace }}\release\main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}.exe
 
     - name: Run the program
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       if: matrix.os == 'ubuntu-latest'
-      run: ./${{ matrix.project_name }}
+      run: |
+        ./${{ matrix.project_name }}
+        cp ./${{ matrix.project_name }} ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
+
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      with:
+        body: "The first release of the project."
+        files: |
+          ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}.exe
+          ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
 
 
 
