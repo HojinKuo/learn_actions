@@ -79,6 +79,7 @@ jobs:
         .\Release\${{ matrix.project_name }}.exe
         XCOPY .\Release\${{ matrix.project_name }}.exe ${{ github.workspace }}\release\
         mv ${{ github.workspace }}\release\${{ matrix.project_name }}.exe ${{ github.workspace }}\release\main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
+        ls ${{ github.workspace }}\release\
     - name: Run the program
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       if: matrix.os == 'ubuntu-latest'
@@ -86,6 +87,7 @@ jobs:
         ls 
         ./${{ matrix.project_name }}
         cp ./${{ matrix.project_name }} ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
+        ls ${{ github.workspace }}/release/
 
     - name: Release
       uses: softprops/action-gh-release@v2  
