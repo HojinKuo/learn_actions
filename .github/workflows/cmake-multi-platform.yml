@@ -75,9 +75,11 @@ jobs:
         cp ./${{ matrix.project_name }} ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
 
     - name: Release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v2  
+      if: github.ref_type == 'tag'
       with:
         body: "The first release of the project."
+        tag_name: ${{ github.ref }}
         files: |
           ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}.exe
           ${{ github.workspace }}/release/main_${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
