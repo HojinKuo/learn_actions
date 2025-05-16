@@ -3,7 +3,16 @@ name: CMake on multiple platforms
 permissions:
   contents: write
 on:
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release'
+  push:
+    branches     : [ main ]
+    paths-ignore : [ '**.md', '**.txt' ]
+  pull_request:
+    branches     : [ main ]
+    paths-ignore : [ '**.md', '**.txt' ]
 
 jobs:
   build:
