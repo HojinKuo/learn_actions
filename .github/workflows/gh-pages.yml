@@ -8,13 +8,14 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+        
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set reusable strings
         id: strings
         shell: bash
         run: |
-          apt install -y doxygen
+          sudo apt-get install doxygen
           doxygen Doxyfile
 
       - name: Deploy
