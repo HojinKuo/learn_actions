@@ -10,19 +10,25 @@ jobs:
       matrix:
         sys:
           - mingw64
-          - mingw32
     defaults:
       run:
         shell: msys2 {0}
     steps:
-      - uses: actions/checkout@v3
       - uses: msys2/setup-msys2@v2
         with:
           msystem: mingw64
           update: true
-          install: git 
-      - name: CI-Build
+          install: git make libtool pkg-config pkgconfig autotools texinfo libusb 
+      - name: Build
         run: |
           echo 'Running in MSYS2!'
           uname -a 
-          ./ci-build.sh
+          git clone --depth=1 --recurse-submodules --branch v0.12.0 https://github.com/openocd-org/openocd.git
+          cd openocd
+          ./bootstrap
+          export CFLAGS="$CFLAGS -Wno-error"
+          mkdir build
+          cd build
+          ../configure
+          
+          
