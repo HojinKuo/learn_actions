@@ -4,7 +4,7 @@ on:
   workflow_dispatch
 
 jobs:
-  msys2-ucrt64:
+  build-msys2:
     runs-on: windows-latest
     strategy:
       matrix:
@@ -28,8 +28,10 @@ jobs:
           cd openocd
           ./bootstrap
           export CFLAGS="$CFLAGS -Wno-error"
-          mkdir build
+          mkdir -pv build
           cd build
-          ../configure
+          ../configure --program-prefix=kuo --enable-static
+          make
+          ls -rR ./
           
           
